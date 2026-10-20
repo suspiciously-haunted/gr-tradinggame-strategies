@@ -1,0 +1,15 @@
+[project]
+name = "gr-tradinggame"
+version = "0.2.0"
+description = "G-Research Trading Game Client"
+requires-python = ">=3.10"
+dependencies = [
+    "cloudpickle==3.1.1",
+    "requests>=2.32.3",
+    "numpy>=2.0.2",
+    "ipython>=7.34.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

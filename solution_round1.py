@@ -1,26 +1,7 @@
 import math
 from bisect import bisect_left, bisect_right, insort
 
-# Strategy overview (Round 3: Exponential(mean 10) rewards, collisions score zero)
-# -------------------------------------------------------------------------------
-# If two or more teams accept on the same turn, all of them score zero (and are
-# still locked out).  So a reward is only worth what we expect to *keep*:
-#     reward * P(no other free team accepts it this turn).
-#
-# 1. Watching the field: other_scores reports every team's (score, is_locked) at
-#    t-1.  A score rise means the team took that turn's reward alone; becoming
-#    locked with no score rise means it accepted and collided.  The lag between
-#    a score rise and the lock flag is learned from solo accepts, so collisions
-#    are dated correctly whichever way the server reports the lock.
-# 2. Opponent model: from the turns each team was free we fit a cutoff
-#    (P(accept) is p_hi above it, p_lo below it).  Teams with few observations
-#    use a pooled fit; before any data, a Round 1 style cutoff of 2 x mean.
-#    A team is free now if its last accept was at least lockout + 1 turns ago.
-# 3. Value of waiting: optimal stopping with lockout on what we *would have
-#    kept* on each past turn (the reward if nobody else accepted, else 0),
-#    padded early on with an Exponential(mean 10) prior scaled by the fraction
-#    of uncontested turns.  Accept iff expected kept reward >= V(s-1) - V(s-G).
-#    The cutoff falls near the end of the game automatically.
+# Won Round 1
 
 MEAN = 10.0               # known reward mean for this round
 H_MAX = 600               # DP horizon; the cutoff is flat well before this many turns left
